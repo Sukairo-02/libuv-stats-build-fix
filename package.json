@@ -3,24 +3,20 @@
   "version": "1.0.0",
   "description": "Get libuv stats.",
   "main": "index.js",
-  "repository": {
-    "type": "git",
-    "url": "git+ssh://git@github.com/napi-rs/package-template.git"
-  },
+  "repository": "js-benchmark-all/libuv-stats",
   "license": "MIT",
-  "browser": "browser.js",
   "keywords": [
     "napi-rs",
     "NAPI",
     "N-API",
     "Rust",
     "node-addon",
-    "node-addon-api"
+    "node-addon-api",
+    "libuv"
   ],
   "files": [
     "index.d.ts",
-    "index.js",
-    "browser.js"
+    "index.js"
   ],
   "napi": {
     "binaryName": "libuv-stats",
@@ -53,7 +49,6 @@
     "node": ">= 22.14.0 < 23 || >= 23.6.0"
   },
   "publishConfig": {
-    "registry": "https://registry.npmjs.org/",
     "access": "public"
   },
   "scripts": {
