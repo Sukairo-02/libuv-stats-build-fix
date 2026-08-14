@@ -1,0 +1,99 @@
+{
+  "name": "libuv-stats",
+  "version": "1.0.0",
+  "description": "Template project for writing node package with napi-rs",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/napi-rs/package-template.git"
+  },
+  "license": "MIT",
+  "browser": "browser.js",
+  "keywords": [
+    "napi-rs",
+    "NAPI",
+    "N-API",
+    "Rust",
+    "node-addon",
+    "node-addon-api"
+  ],
+  "files": [
+    "index.d.ts",
+    "index.js",
+    "browser.js"
+  ],
+  "napi": {
+    "binaryName": "libuv-stats",
+    "targets": [
+      "aarch64-apple-darwin",
+      "aarch64-linux-android",
+      "aarch64-unknown-linux-gnu",
+      "aarch64-unknown-linux-musl",
+      "aarch64-unknown-linux-ohos",
+      "aarch64-pc-windows-msvc",
+      "x86_64-apple-darwin",
+      "x86_64-pc-windows-msvc",
+      "x86_64-pc-windows-gnu",
+      "x86_64-unknown-linux-gnu",
+      "x86_64-unknown-linux-musl",
+      "x86_64-unknown-linux-ohos",
+      "x86_64-unknown-freebsd",
+      "i686-pc-windows-msvc",
+      "armv7-unknown-linux-gnueabihf",
+      "armv7-unknown-linux-musleabihf",
+      "armv7-linux-androideabi",
+      "universal-apple-darwin",
+      "loongarch64-unknown-linux-gnu",
+      "riscv64gc-unknown-linux-gnu",
+      "powerpc64le-unknown-linux-gnu",
+      "s390x-unknown-linux-gnu"
+    ]
+  },
+  "engines": {
+    "node": ">= 22.14.0 < 23 || >= 23.6.0"
+  },
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/",
+    "access": "public"
+  },
+  "scripts": {
+    "artifacts": "napi artifacts",
+    "bench": "node --import @oxc-node/core/register benchmark/bench.ts",
+    "build": "napi build --platform --release",
+    "build:debug": "napi build --platform",
+    "format": "run-p format:prettier format:rs format:toml",
+    "format:prettier": "prettier . -w",
+    "format:toml": "taplo format",
+    "format:rs": "cargo fmt",
+    "test": "node --test \"tests/**/*.test.*\"",
+    "lint": "oxlint .",
+    "prepublishOnly": "napi prepublish -t npm",
+    "preversion": "napi build --platform && git add .",
+    "version": "napi version",
+    "prepare": "husky"
+  },
+  "devDependencies": {
+    "@emnapi/core": "^1.5.0",
+    "@emnapi/runtime": "^1.5.0",
+    "@napi-rs/cli": "^3.8.6",
+    "@oxc-node/core": "^0.1.0",
+    "@taplo/cli": "^0.7.0",
+    "@tybys/wasm-util": "^0.10.0",
+    "chalk": "^5.6.2",
+    "husky": "^9.1.7",
+    "lint-staged": "^17.0.0",
+    "measure-loop": "^0.4.0",
+    "npm-run-all2": "^9.0.0",
+    "oxlint": "^1.14.0",
+    "prettier": "^3.6.2",
+    "typescript": "^7.0.0"
+  },
+  "lint-staged": {
+    "*.@(js|ts|tsx|yml|yaml|md|json)": [
+      "oxlint --fix"
+    ]
+  },
+  "dependencies": {
+    "@types/node": "^26.2.0"
+  }
+}
