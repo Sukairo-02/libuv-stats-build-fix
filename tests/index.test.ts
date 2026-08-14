@@ -9,6 +9,8 @@ beforeEach(track);
 afterEach(untrack);
 
 it('iters()', async () => {
+  assert.ok(lastLoopIters() === 0);
+
   await setImmediate();
   assert.ok(lastLoopIters() === 1);
 
