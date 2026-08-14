@@ -91,7 +91,7 @@
   },
   "lint-staged": {
     "*.@(js|ts|tsx|yml|yaml|md|json)": [
-      "oxlint --fix"
+      "oxlint --fix --no-error-on-unmatched-pattern"
     ]
   },
   "dependencies": {
