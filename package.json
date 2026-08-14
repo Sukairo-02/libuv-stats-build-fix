@@ -67,6 +67,7 @@
     "format:rs": "cargo fmt",
     "test": "node --test \"tests/**/*.test.*\"",
     "lint": "oxlint .",
+    "lint-staged": "lint-staged",
     "prepublishOnly": "napi prepublish -t npm",
     "preversion": "napi build --platform && git add .",
     "version": "napi version",
