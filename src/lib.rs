@@ -31,8 +31,8 @@ pub fn lastLoopIters() -> u32 {
 }
 
 #[napi]
-pub fn register(env: Env) -> Result<()> {
-  unregister();
+pub fn track(env: Env) -> Result<()> {
+  untrack();
 
   let current_event_loop = env.get_uv_event_loop()?;
 
@@ -64,7 +64,7 @@ pub fn register(env: Env) -> Result<()> {
 }
 
 #[napi]
-pub fn unregister() {
+pub fn untrack() {
   if INITIALIZED.get() {
     CHECK_HANDLE.with_borrow_mut(|handle| unsafe {
       uv_close(handle.as_mut_ptr().cast(), Some(on_close));

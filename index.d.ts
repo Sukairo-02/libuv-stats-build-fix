@@ -2,6 +2,6 @@
 /* eslint-disable */
 export declare function lastLoopIters(): number
 
-export declare function register(): void
+export declare function track(): void
 
-export declare function unregister(): void
+export declare function untrack(): void

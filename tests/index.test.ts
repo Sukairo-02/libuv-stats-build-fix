@@ -3,15 +3,16 @@ import assert from 'node:assert';
 
 import { setImmediate } from 'node:timers/promises';
 
-import { lastLoopIters, register, unregister } from '../index.js';
+import { lastLoopIters, track, untrack } from '../index.js';
 
-beforeEach(register);
-afterEach(unregister);
+beforeEach(track);
+afterEach(untrack);
 
 it('iters()', async () => {
   await setImmediate();
   assert.ok(lastLoopIters() === 1);
 
   await setImmediate();
-  assert.ok(lastLoopIters() === 1);
+  await setImmediate();
+  assert.ok(lastLoopIters() === 2);
 });

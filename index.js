@@ -701,5 +701,5 @@ if (!nativeBinding) {
 
 module.exports = nativeBinding
 module.exports.lastLoopIters = nativeBinding.lastLoopIters
-module.exports.register = nativeBinding.register
-module.exports.unregister = nativeBinding.unregister
+module.exports.track = nativeBinding.track
+module.exports.untrack = nativeBinding.untrack

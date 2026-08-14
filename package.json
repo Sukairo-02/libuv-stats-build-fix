@@ -1,7 +1,7 @@
 {
   "name": "libuv-stats",
   "version": "1.0.0",
-  "description": "Template project for writing node package with napi-rs",
+  "description": "Get libuv stats.",
   "main": "index.js",
   "repository": {
     "type": "git",
