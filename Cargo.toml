@@ -19,6 +19,9 @@ features = ["napi9"]
 [build-dependencies]
 napi-build = "2"
 
+[profile.dev]
+debug = "line-tables-only"
+
 [profile.release]
 lto = true
 strip = "symbols"

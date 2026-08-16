@@ -1,20 +1,23 @@
-import { afterEach, beforeEach, it } from 'node:test';
-import assert from 'node:assert';
+import { it, describe } from "node:test";
 
-import { setImmediate } from 'node:timers/promises';
+import { Worker } from "node:worker_threads";
 
-import { lastLoopIters, track, untrack } from '../index.js';
+const tests = {
+  "lastLoopIters()": "./tests/last-loop-iters.ts",
+};
 
-beforeEach(track);
-afterEach(untrack);
+for (const key in tests) {
+  const path = tests[key as keyof typeof tests];
 
-it('iters()', async () => {
-  assert.ok(lastLoopIters() === 0);
+  describe(key, () => {
+    it("main thread", async () => {
+      await import(path);
+    });
 
-  await setImmediate();
-  assert.ok(lastLoopIters() === 1);
-
-  await setImmediate();
-  await setImmediate();
-  assert.ok(lastLoopIters() === 2);
-});
+    it("worker thread", async () => {
+      await using _ = new Worker(path, {
+        eval: true,
+      });
+    });
+  });
+}
