@@ -213,7 +213,10 @@ jobs:
 
           run: |
             sudo pkg install -y -f curl node libnghttp2 npm cmake
-            sudo npm install -g pnpm --ignore-scripts
+
+            sudo npm install -g \
+              "pnpm@$(node -p 'require("./package.json").packageManager.split("@").pop()')" \
+              --ignore-scripts
 
             curl https://sh.rustup.rs -sSf --output rustup.sh
             sh rustup.sh -y --profile minimal --default-toolchain stable
