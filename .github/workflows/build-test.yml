@@ -377,8 +377,21 @@ jobs:
 
       - name: Install dependencies
         run: |
-          pnpm config set supportedArchitectures.cpu "current,arm64,x64,arm"
-          pnpm config set supportedArchitectures.libc "current,musl,gnu"
+          node -e "
+            const fs = require('node:fs');
+
+            const pkg = JSON.parse(fs.readFileSync('package.json', 'utf8'));
+            pkg.pnpm = {
+              ...pkg.pnpm,
+              supportedArchitectures: {
+                cpu: ['current', 'arm64', 'x64', 'arm'],
+                libc: ['current', 'musl', 'glibc'],
+              },
+            };
+
+            fs.writeFileSync('package.json', JSON.stringify(pkg, null, 2) + '\n');
+          "
+
           pnpm install
 
       - name: Download artifacts
