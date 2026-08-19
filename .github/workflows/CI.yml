@@ -35,7 +35,6 @@ jobs:
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
         with:
-          version: 10
           run_install: false
 
       - name: Setup node
@@ -123,7 +122,6 @@ jobs:
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
         with:
-          version: 10
           run_install: false
 
       - name: Setup node
@@ -298,7 +296,6 @@ jobs:
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
         with:
-          version: 10
           run_install: false
 
       - name: Setup node
@@ -353,17 +350,10 @@ jobs:
     steps:
       - uses: actions/checkout@v7
 
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v4
-        with:
-          version: 10
-          run_install: false
-
       - name: Setup node
         uses: actions/setup-node@v7
         with:
           node-version: ${{ matrix.node }}
-          cache: pnpm
 
       - name: Output docker params
         id: docker
@@ -385,25 +375,6 @@ jobs:
               console.log('IMAGE=node:${{ matrix.node }}-slim')
             }
           " >> $GITHUB_OUTPUT
-
-      - name: Install dependencies
-        run: |
-          node -e "
-            const fs = require('node:fs');
-
-            const pkg = JSON.parse(fs.readFileSync('package.json', 'utf8'));
-            pkg.pnpm = {
-              ...pkg.pnpm,
-              supportedArchitectures: {
-                cpu: ['current', 'arm64', 'x64', 'arm'],
-                libc: ['current', 'musl', 'glibc'],
-              },
-            };
-
-            fs.writeFileSync('package.json', JSON.stringify(pkg, null, 2) + '\n');
-          "
-
-          pnpm install
 
       - name: Download artifacts
         uses: actions/download-artifact@v8
@@ -430,7 +401,7 @@ jobs:
           image: ${{ steps.docker.outputs.IMAGE }}
           name: test-bindings-${{ matrix.target }}
           options: "-v ${{ github.workspace }}:${{ github.workspace }} -w ${{ github.workspace }} --platform ${{ steps.docker.outputs.PLATFORM }}"
-          args: pnpm test
+          args: sh -c "corepack enable pnpm && pnpm test"
 
   publish:
     name: Publish
@@ -452,7 +423,6 @@ jobs:
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
         with:
-          version: 10
           run_install: false
 
       - name: Setup node
