@@ -1,4 +1,4 @@
-name: CI
+name: Build & Test
 
 env:
   DEBUG: napi:*
@@ -7,18 +7,7 @@ env:
   CARGO_INCREMENTAL: "1"
 
 on:
-  push:
-    branches:
-      - main
-    tags-ignore:
-      - "**"
-    paths-ignore:
-      - "**/*.md"
-      - LICENSE
-      - "**/*.gitignore"
-      - .editorconfig
-      - docs/**
-  pull_request: null
+  workflow_dispatch: null
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -419,69 +408,3 @@ jobs:
           options: "-v ${{ github.workspace }}:${{ github.workspace }} -w ${{ github.workspace }} --platform ${{ steps.docker.outputs.PLATFORM }}"
           args: pnpm test
 
-  publish:
-    name: Publish
-    runs-on: ubuntu-latest
-
-    permissions:
-      contents: write
-      id-token: write
-
-    needs:
-      - lint
-      - build-freebsd
-      - test-macOS-windows-binding
-      - test-linux-binding
-
-    steps:
-      - uses: actions/checkout@v7
-
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v4
-        with:
-          version: 10
-          run_install: false
-
-      - name: Setup node
-        uses: actions/setup-node@v7
-        with:
-          node-version: 24
-          cache: pnpm
-
-      - name: Install dependencies
-        run: pnpm install
-
-      - name: Create npm dirs
-        run: pnpm napi create-npm-dirs
-
-      - name: Download all artifacts
-        uses: actions/download-artifact@v8
-        with:
-          path: artifacts
-
-      - name: Move artifacts
-        run: pnpm artifacts
-
-      - name: List packages
-        run: ls -R ./npm
-        shell: bash
-
-      - name: Publish
-        run: |
-          npm config set provenance true
-
-          if git log -1 --pretty=%B | grep "^[0-9]\+\.[0-9]\+\.[0-9]\+$"; then
-            echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" >> ~/.npmrc
-            npm publish --access public
-
-          elif git log -1 --pretty=%B | grep "^[0-9]\+\.[0-9]\+\.[0-9]\+"; then
-            echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" >> ~/.npmrc
-            npm publish --tag next --access public
-
-          else
-            echo "Not a release, skipping publish"
-          fi
-
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
